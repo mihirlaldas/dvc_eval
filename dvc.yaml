@@ -1,0 +1,27 @@
+stages:
+  prepare:
+    cmd: python code/src/prepare.py data/train_40k.csv
+    deps:
+    - code/src/prepare.py
+    - data/train_40k.csv
+    outs:
+    - data/prepared
+  train:
+    cmd: python code/src/train.py
+    deps:
+    - code/src/train.py
+    - data/prepared/test_x.pkl
+    - data/prepared/test_y.pkl
+    - data/prepared/train_x.pkl
+    - data/prepared/train_y.pkl
+    outs:
+    - model/model.pkl
+  evaluate:
+    cmd: python code/src/evaluate.py
+    deps:
+    - code/src/evaluate.py
+    - data/prepared/original_x.pkl
+    - data/prepared/original_y.pkl
+    - model/model.pkl
+    outs:
+    - report
